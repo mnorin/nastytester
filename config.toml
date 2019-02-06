@@ -1,0 +1,56 @@
+languageCode = "en-us"
+title = "Nasty Tester"
+baseurl = "https://nastytester.com/"
+theme = "beautifulhugo"
+copyright = "Nasty Tester"
+pygmentsStyle = "xcode"
+uglyUrls = true
+comments = true
+disqusShortname = "nasty-tester"
+googleAnalytics = "UA-130401599-1"
+
+[params]
+  useHLJS = true
+  paginatedsections = ["posts"]
+  description = "When testing gets nasty..."
+  metadescription = "Blog about testing, tests automation, software quality assurance, many related technical things and thinking outside the box"
+
+[menu]
+  [[menu.main]]
+    identifier = "tags"
+    name = "Tags"
+    title = "Tags"
+    url = "/tags.html"
+    weight = -110
+  [[menu.main]]
+    identifier = "posts"
+    name = "Posts"
+    title = "Posts section"
+    url = "/posts.html"
+    weight = -110
+
+[Author]
+  name = "Max Norin"
+  website = "https://nastytester.com"
+#  email = "@domain.com"
+#  facebook = "username"
+#  googleplus = "+username" # or xxxxxxxxxxxxxxxxxxxxx
+  github = "mnorin"
+#  gitlab = "username"
+#  bitbucket = "username"
+#  twitter = "username"
+#  reddit = "username"
+  linkedin = "mnorin"
+#  xing = "username"
+#  stackoverflow = "users/XXXXXXX/username"
+#  snapchat = "username"
+#  instagram = "username"
+#  youtube = "user/username" # or channel/channelname
+#  soundcloud = "username"
+#  spotify = "username"
+#  bandcamp = "username"
+#  itchio = "username"
+#  vk = "username"
+#  paypal = "username"
+  telegram = "@maxnorin"
+#  500px = "username"

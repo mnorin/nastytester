@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Linux on Nasty Tester</title>
+    <link>https://nastytester.com/tags/linux.html</link>
+    <description>Recent content in Linux on Nasty Tester</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>Nasty Tester</copyright>
+    <lastBuildDate>Tue, 20 Nov 2018 21:40:07 +1300</lastBuildDate>
+    
+	<atom:link href="https://nastytester.com/tags/linux/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Docker: Stop using it the wrong way. Part 2.</title>
+      <link>https://nastytester.com/posts/docker-part2.html</link>
+      <pubDate>Tue, 20 Nov 2018 21:40:07 +1300</pubDate>
+      
+      <guid>https://nastytester.com/posts/docker-part2.html</guid>
+      <description>Layers is a very important subject when it comes to Docker images. We will create a docker container image built in a &amp;ldquo;traditional&amp;rdquo; way and then we will try to make it smaller. Let&amp;rsquo;s make a container that runs a webserver. Nginx is a good option to start with. It&amp;rsquo;s small, fast, it has a lot of modules, very flexible in terms of settings and well-documented, therefore I strongly recommend to get yourself familiar with it if you are still not.</description>
+    </item>
+    
+    <item>
+      <title>Docker: Stop using it the wrong way. Part 1.</title>
+      <link>https://nastytester.com/posts/docker-part1.html</link>
+      <pubDate>Tue, 20 Nov 2018 19:59:36 +1300</pubDate>
+      
+      <guid>https://nastytester.com/posts/docker-part1.html</guid>
+      <description>Yes, that&amp;rsquo;s right. Most likely if you use docker you do it the wrong way. The majority of people who try to use it start using it without bothering to understand, what is this all about, how it works and actually how it supposed to work.
+If it works for you and you are happy about it then it&amp;rsquo;s OK, keep doing it. If you want to know a little bit more about it and understand how to actually use it properly, I have something to tell you about it.</description>
+    </item>
+    
+  </channel>
+</rss>
