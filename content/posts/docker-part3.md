@@ -5,7 +5,7 @@ type: "post"
 subtitle: "If this is a coffee, please bring me some tea; but if this is tea then please bring me some coffee (c) Abraham Lincoln"
 image: ""
 tags: ["docker", "linux", "java"]
-date: 2018-11-20T22:00:07+13:00
+date: 2019-03-10T18:09:28+13:00
 draft: false
 ---
 
@@ -56,22 +56,144 @@ And if we put only modules certain application uses in each container, these con
 
 There are couple of things you will need to use, that are parts of OpenJDK 11: jdeps and jlink. First one (jdeps) checks Java package dependencies, second one (jlink) compiles custom Java runtime.
 
-So, we want to install OpenJDK 11 and build our app:
+So, we want to install Java 11 and build our app.
+
+Dockerfile:
 
 {{< highlight docker >}}
-FROM debian:latest
+FROM debian:stretch-slim
 
-RUN apt-get update &&\
-  apt-get -y install openjdk-8-jdk &&\
-  echo 'public class Hello{public static void main(String[] argv){System.out.println("Hello world!");}}' > Hello.java &&\
-  mkdir META-INF &&\
-  echo 'Main-Class: Hello' > META-INF/MANIFEST.MF &&\
-  javac Hello.java &&\
-  jar cvmf META-INF/MANIFEST.MF Hello.jar Hello.class &&\
-  apt-get clean &&\
-  rm -rf /var/lib/apt/lists/* &&\
-  rm -rf META-INF Hello.java Hello.class
+RUN apt-get update 
+ && DEBIAN_FRONTEND=noninteractive apt-get -y upgrade \
+ && DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends \
+ curl ca-certificates krb5-locales libcurl3 libffi6 libgmp10 libgnutls30 \
+ libgssapi-krb5-2 libhogweed4 libidn11 libidn2-0 libk5crypto3 libkeyutils1 \
+ libkrb5-3 libkrb5support0 libldap-2.4-2 libldap-common libnettle6 \
+ libnghttp2-14 libp11-kit0 libpsl5 librtmp1 libsasl2-2 libsasl2-modules \
+ libsasl2-modules-db libssh2-1 libssl1.0.2 libssl1.1 libtasn1-6 libunistring0 \
+ openssl publicsuffix libasound2 libasound2-data \
+ && apt-get clean \
+ && rm -rf /var/lib/apt/lists \
+ && curl -L -b "oraclelicense=a" -O http://download.oracle.com/otn-pub/java/jdk/11.0.2+9/f51449fcd52f4d52b93a989c5c56ed3c/jdk-11.0.2_linux-x64_bin.deb \
+ && dpkg -i ./jdk-11.0.2_linux-x64_bin.deb \
+ && rm ./jdk-11.0.2_linux-x64_bin.deb \
+ && echo 'public class Hello{public static void main(String[] argv){System.out.println("Hello world!");}}' > Hello.java \
+ && mkdir META-INF \
+ && echo 'Main-Class: Hello' > META-INF/MANIFEST.MF \
+ && JAVA_HOME=/usr/lib/jvm/jdk-11.0.2 \
+ && PATH=$PATH:/${JAVA_HOME}/bin \
+ && javac Hello.java \
+ && jar cvmf META-INF/MANIFEST.MF Hello.jar Hello.class \
+ && rm -rf META-INF Hello.class
 
-CMD ["java","-jar","Hello.jar"]
+CMD ["/usr/lib/jvm/jdk-11.0.2/bin/java","-jar","Hello.jar"]
 {{< /highlight >}}
 
+We build it using command
+
+{{< highlight bash >}}
+docker build -t local/java11-app .
+{{< /highlight >}}
+
+We receive a container image with the size of 378 MB:
+
+{{< highlight bash >}}
+$ docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+local/java11-app    latest              8af86d0c908d        2 minutes ago       378MB
+{{< /highlight >}}
+
+And if we run it:
+
+{{< highlight bash >}}
+$ docker run local/java11-app
+Hello world!
+{{< /highlight >}}
+
+Our app works, it actually does what it should, but this container image is bigger than I would like it to be.
+Because we have the whole Java runtime even though we don't use most of it.
+
+Now we can build our custom runtime and then create the final version of this container image.
+
+I'll skip some details as I already described them in part 2, and I'll just show you what we get in the end.
+
+{{< highlight docker >}}
+FROM debian:stretch-slim as builder
+
+# Install all necessary packages
+RUN apt-get update \
+ && DEBIAN_FRONTEND=noninteractive apt-get -y upgrade \
+ && DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends \
+ curl ca-certificates krb5-locales libcurl3 libffi6 libgmp10 libgnutls30 \
+ libgssapi-krb5-2 libhogweed4 libidn11 libidn2-0 libk5crypto3 libkeyutils1 \
+ libkrb5-3 libkrb5support0 libldap-2.4-2 libldap-common libnettle6 \
+ libnghttp2-14 libp11-kit0 libpsl5 librtmp1 libsasl2-2 libsasl2-modules \
+ libsasl2-modules-db libssh2-1 libssl1.0.2 libssl1.1 libtasn1-6 libunistring0 \
+ openssl publicsuffix libasound2 libasound2-data \
+ && apt-get clean \
+ && rm -rf /var/lib/apt/lists
+
+# Install JDK 11
+RUN curl -L -b "oraclelicense=a" -O http://download.oracle.com/otn-pub/java/jdk/11.0.2+9/f51449fcd52f4d52b93a989c5c56ed3c/jdk-11.0.2_linux-x64_bin.deb \
+ && dpkg -i ./jdk-11.0.2_linux-x64_bin.deb \
+ && rm ./jdk-11.0.2_linux-x64_bin.deb
+
+ENV JAVA_HOME "/usr/lib/jvm/jdk-11.0.2"
+
+# Create and compile a program
+RUN echo 'public class Hello{public static void main(String[] argv){System.out.println("Hello world!");}}' > Hello.java \
+ && mkdir META-INF \
+ && echo 'Main-Class: Hello' > META-INF/MANIFEST.MF \
+ && PATH=$PATH:/${JAVA_HOME}/bin \
+ && javac Hello.java \
+ && jar cvmf META-INF/MANIFEST.MF Hello.jar Hello.class
+
+# Build minimized runtime
+RUN JAVA_MODULES=$(${JAVA_HOME}/bin/jdeps Hello.jar | awk '{print $4}' | grep -v '^$' | sort | uniq) &&\
+ JAVA_MODULES=$(echo $JAVA_MODULES | sed -e 's/ /,/g') &&\
+ ${JAVA_HOME}/bin/jlink --no-header-files --no-man-pages --output /jdk11 --compress 2 --add-modules ${JAVA_MODULES}
+
+# At his point we have /jdk11 and /Hello.jar built
+# So we can start creating the final image
+
+FROM scratch as runner
+
+COPY --from=builder /jdk11 /jdk11
+COPY --from=builder /Hello.jar /Hello.jar
+COPY --from=builder /lib64/ld-linux-x86-64.so.2 /lib64/ld-linux-x86-64.so.2
+COPY --from=builder /lib/x86_64-linux-gnu/libz.so.1 /lib/x86_64-linux-gnu/libz.so.1
+COPY --from=builder /lib/x86_64-linux-gnu/libpthread.so.0 /lib/x86_64-linux-gnu/libpthread.so.0
+COPY --from=builder /lib/x86_64-linux-gnu/libdl.so.2 /lib/x86_64-linux-gnu/libdl.so.2
+COPY --from=builder /lib/x86_64-linux-gnu/libc.so.6 /lib/x86_64-linux-gnu/libc.so.6
+COPY --from=builder /lib/x86_64-linux-gnu/libm.so.6 /lib/x86_64-linux-gnu/libm.so.6
+COPY --from=builder /lib/x86_64-linux-gnu/librt.so.1 /lib/x86_64-linux-gnu/librt.so.1
+
+ENV JAVA_HOME /jdk11
+
+CMD ["/jdk11/bin/java","-jar","Hello.jar"]
+{{< /highlight >}}
+
+Now we build the image:
+
+{{< highlight bash >}}
+docker build -t local/java11-app .
+{{< /highlight >}}
+
+And run it:
+
+{{< highlight bash >}}
+docker run local/java11-app
+{{< /highlight >}}
+
+As the run result we get "Hello world!" printed.
+And now we can check how big is the image:
+
+{{< highlight bash >}}
+$ docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+local/java11-app    latest              eaae6f01c109        4 minutes ago       39.2MB
+<none>              <none>              2e3144e88cb7        17 minutes ago      414MB
+{{< /highlight >}}
+
+As you can see, first image, named "builder" is 414MB big, but the second one, named "runner", is only 39.2MB.
+Making it even smaller may be really challenging, so, we should stop at this point and enjoy the result.
