@@ -25,7 +25,7 @@ googleAnalytics = "UA-130401599-1"
     identifier = "tags"
     name = "Tags"
     title = "Tags"
-    url = "nastytester/tags.html"
+    url = "/tags.html"
     weight = -110
   [[menu.main]]
     identifier = "posts"
