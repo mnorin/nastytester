@@ -1,3 +1,7 @@
+{{ if le hugo.Version "0.124.0" }}
+	{{ errorf "Please use Hugo version 0.124.0 or higher!" }}
+{{ end }}
+
 <!DOCTYPE html>
 <html lang="{{ .Lang }}" itemscope itemtype="http://schema.org/WebPage">
   <head>
@@ -6,11 +10,9 @@
   <body>
     {{ partial "nav.html" . }}
     {{ block "header" . }}{{ partial "header.html" . }}{{ end }}
-    {{ block "main" . }}
-    {{ end }}
-    {{ partial "disqus.html" . }}
+    {{ block "main" . }}{{ end }}
     {{ partial "footer.html" . }}
-    {{ partial "google_analytics.html" . }}
+    {{ block "footer" . }}{{ end }}
   </body>
 </html>
 
