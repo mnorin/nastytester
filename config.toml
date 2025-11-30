@@ -14,7 +14,7 @@ googleAnalytics = "UA-130401599-1"
   paginatedsections = ["posts"]
   description = "When testing gets nasty..."
   metadescription = "Blog about technical things and thinking outside the box"
-  [[params.author]]
+  [params.author]
     name = "Max Norin"
     github = "mnorin"
     linkedin = "mnorin"
