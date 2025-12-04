@@ -6,8 +6,11 @@ copyright = "Nasty Tester"
 pygmentsStyle = "xcode"
 uglyUrls = true
 comments = true
-disqusShortname = "nasty-tester"
 googleAnalytics = "UA-130401599-1"
+
+[services]
+  [services.disqus]
+    shortname = "nasty-tester"
 
 [params]
   useHLJS = true

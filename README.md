@@ -3,5 +3,5 @@ nastytester.com website
 
 ## How to run locally
 ```
-hugo server -w
+hugo serve -w
 ```
