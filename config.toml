@@ -34,7 +34,7 @@ googleAnalytics = "UA-130401599-1"
     identifier = "posts"
     name = "Posts"
     title = "Posts section"
-    url = "nastytester/posts.html"
+    url = "posts.html"
     weight = -110
 
 [caches]
