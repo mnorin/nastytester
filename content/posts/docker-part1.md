@@ -26,11 +26,12 @@ Actually, virtualization systems/hypervisors like OpenVZ also use host system ke
 ... a containerization system (or operating system level virtualization system) plus tools and infrastructure that make certain things so much easier.
 
 Docker allows to limit resources for a process or a group of processes using Linux kernel subsystem called cgroups (control groups), technically it creates a virtual environment and allows to limit it if necessary.
-Plus you can create your own contaner images and use Docker images storage called repository to keep them and pull container images from it when you want to use them. 
+Plus you can create your own container images and use Docker images storage called repository to keep them and pull container images from it when you want to use them. 
 
 ### How it works
 
-In the simplest case you just pull a container image to your computer (server/workstation/laptop - choose one) and then run a container based on the image to execute. When you run a container, it will start a program, command or script that defined to be an entry point.
+In the simplest case you just pull a container image to your computer (server/workstation/laptop - choose one) and then run a container based on the image to execute.
+When you run a container, it will start a program, command or script that defined to be an entry point.
 From this moment the entry point executable object will be the main (or the only) process that will work inside the container
 
 ### Why do we need it?
@@ -57,7 +58,7 @@ file system. If it's not clear yet, check out this diagram:
 <br>
 
 3) You can create a Docker image for your own application and publish it in a public repository (they can be public and private). Doing so you will help other people to get an installed and configured application in a couple of minutes
-or even faster. As it works the opposite way also, you can use images created by other people without waisting your time on an app installation and configuration.
+or even faster. As it works the opposite way also, you can use images created by other people without wasting your time on an app installation and configuration.
 
 4) You can develop your application on your workstation and then use the same Docker image for your local test environment and a production system located in an Amazon or Google cloud the same way you use it on your computer (not literally the same way, but very close).
 
@@ -67,8 +68,8 @@ These are not the only reasons to use Docker, but it should be enough to start c
 
 There should be a program you plan to run, all files it needs to run (settings, libraries you wrote, directories that contain the program and all the files) and system libraries required to run your program. There is nothing else you ideally need to have there.
 
-If you have only what you need and no more than that, than your program will be working as you expect it to and it's really good for security. If your application will be broken than an attacker will not be able to do much, if there is nothing else he could use.
-If your conainer contains (sounds funny) the whole operating system, including a package manager and a set of compilers for different programming languages, then broken container can be an invasion point for your system, because it will be possible to compile an exploit
+If you have only what you need and no more than that, then your program will be working as you expect it to and it's really good for security. If your application will be broken in, then an attacker will not be able to do much, if there is nothing else he could use.
+If your container contains (sounds funny) the whole operating system, including a package manager and a set of compilers for different programming languages, then broken container can be an invasion point for your system, because it will be possible to compile an exploit
 or some other unpleasant software to do a reconnaissance, start monitoring your network and so on.
 
 Further we'll see how to minimize a container to make it as small as possible, including only what is necessary.

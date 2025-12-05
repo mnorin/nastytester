@@ -53,9 +53,9 @@ local/nginx         default             68e66d48554d        6 seconds ago       
 
 Well, 177MB for my taste is too much for a web server. Let's make it smaller. But first thigs first, we need to understand what just happened here.
 
-### How many layers we have?
+### How many layers do we have?
 
-As I already  mentioned above, every instruction in Dockerfile creates a layer. In this example we have three layers that are really interesting, FROM, RUN and another RUN.
+As I already mentioned above, every instruction in Dockerfile creates a layer. In this example we have three layers that are really interesting, FROM, RUN and another RUN.
 
 Instruction FROM takes already existing image and uses it as the first level, instructions RUN create some file system objects, every RUN creates its own file system changes.
 Guess what happens when you use these two instruction?

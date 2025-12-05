@@ -54,3 +54,9 @@ Yes, sure. Some examples:
 ### Why should I trust your opinion?
 
 You should not. It's always good to have different points of view. Don't be shy, write what you think, and we can discuss further.
+
+
+P.S.: Well, who am I kidding.
+
+It's likely I'll write a lot about linux and bash, and a little about anything else. We'll see.
+
