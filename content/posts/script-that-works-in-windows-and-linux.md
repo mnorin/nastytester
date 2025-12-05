@@ -17,10 +17,10 @@ If you need to do basically the same in Windows and in Linux, you can write only
 
 It's pretty unlikely that you will use something like this in real life, so, just for fun, let's see how we can write a cross-platform script.
 
-The main idea of a cross-platform script based on different use of similar script elements. I picked operator "goto", which is used in Windows batch files (.bat or .cmd).
-There is no such operator in bash, for example, which will allow us to substitute it. The main task of the script will be simple, let it just print and operationg system name which it runs on.
+The main idea of a cross-platform script is based on different use of similar script elements. I picked operator "goto", which is used in Windows batch files (.bat or .cmd).
+There is no such operator in bash, for example, which will allow us to substitute it. The main task of the script will be simple, let it just print a name of the operating system which it runs on.
 
-As you may know, the first line in scripts for Linux is a name of interepreter that will be used to run the script.
+As you may know, the first line in scripts for Linux is a name of an interepreter that will be used to run the script.
 We'll skip this line and let the current shell to execute it, instead of creating another shell instance. It's for good reasons, I swear.
 
 First thing we should do is to disable printing commands we execute. By default Windows prints all the commands, and Linux does not. The first line of our script will be
@@ -47,7 +47,7 @@ From Linux perspective (bash perspective to be precise) it's a function, from Wi
 OK. Now we have a function, and we need to call it:
 
 {{< highlight bash >}}
-goto $@
+goto "$@"
 exit
 {{< /highlight >}}
 
@@ -79,7 +79,7 @@ goto(){
 uname -o
 }
 
-goto $@
+goto "$@"
 exit
 
 :(){
@@ -94,4 +94,4 @@ All this code (a bit bigger than 100 bytes) you can write to a file with name en
 chmod a+x ./myscript.cmd
 {{< /highlight >}}
 
-That's it. If you have you own examples of cross-platform scripts, I'd be glad to know about them.
+That's it. If you have your own examples of cross-platform scripts, I'd be glad to know about them.
