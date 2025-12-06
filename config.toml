@@ -7,6 +7,7 @@ pygmentsStyle = "xcode"
 uglyUrls = true
 comments = true
 googleAnalytics = "UA-130401599-1"
+mainSections = ["posts"]
 
 [services]
   [services.disqus]
