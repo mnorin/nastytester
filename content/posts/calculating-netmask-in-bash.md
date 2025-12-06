@@ -6,6 +6,7 @@ date: 2025-12-05T23:44:36+13:00
 subtitle: "Masks were meant to be used for a reason and not to hide behind. (c) Anthony T. Hincks"
 image: ""
 tags: ["bash", "linux"]
+draft: false
 ---
 
 A subnet mask is a set of bits that determines how many bits are used to specify the subnet address and how many are used to specify the computer address within that subnet.
