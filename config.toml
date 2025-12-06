@@ -18,6 +18,7 @@ mainSections = ["posts"]
   paginatedsections = ["posts"]
   description = "When testing gets nasty..."
   metadescription = "Blog about technical things and thinking outside the box"
+  mainSections = ["posts"]
   [params.author]
     name = "Max Norin"
     github = "mnorin"
