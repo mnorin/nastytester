@@ -115,3 +115,19 @@ $ ./network-conv.sh $(ifconfig enp5s0 | grep netmask | awk '{print $2" "$4}')
 Nice. Just what I needed.
 
 Obviously, if you need, you can add format validation for IP address and netmask, or add a reverse conversion, in any case, you can do all of it in pure bash.
+
+And if you feel particularly adventurous, here is a golfed version:
+
+{{< highlight bash >}}
+#!/bin/bash
+B=({0..1}{0..1}{0..1}{0..1}{0..1}{0..1}{0..1}{0..1})
+f(){ O=;for o in ${1//./ };do O+=${B[o]};done;echo $O; }
+I=$(f $1)
+N=$(f $2)
+S=${N%%0*}
+C=${#S}
+A=${I::C}${N:C}
+for o in ${A:0:8} ${A:8:8} ${A:16:8} ${A:24:8}; do a+=$((2#$o)).; done
+echo ${a%.}/$C
+{{< /highlight >}}
+
