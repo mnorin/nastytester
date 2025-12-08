@@ -120,14 +120,14 @@ And if you feel particularly adventurous, here is a golfed version:
 
 {{< highlight bash >}}
 #!/bin/bash
-B=({0..1}{0..1}{0..1}{0..1}{0..1}{0..1}{0..1}{0..1})
-f(){ O=;for o in ${1//./ };do O+=${B[o]};done;echo $O; }
-I=$(f $1)
-N=$(f $2)
-S=${N%%0*}
-C=${#S}
-A=${I::C}${N:C}
-for o in ${A:0:8} ${A:8:8} ${A:16:8} ${A:24:8}; do a+=$((2#$o)).; done
-echo ${a%.}/$C
+N=({0..1}{0..1}{0..1}{0..1}{0..1}{0..1}{0..1}{0..1})
+E(){ O=;for o in ${1//./ };do O+=${N[o]};done;echo $O; }
+T=$(E $1)
+M=$(E $2)
+A=${M%%0*}
+S=${#A}
+K=${T::S}${M:S}
+for o in 0 8 16 24; do a+=$((2#${K:o:8})).; done
+echo ${a%.}/$S
 {{< /highlight >}}
 
