@@ -56,6 +56,8 @@ jobs:
           hugo \
             --minify \
             --baseURL "${{ steps.pages.outputs.base_url }}/"
+      - name: Copy Google stuff
+        run: "cp ./googleb0c3172d54ce2fc4.html ./public"
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
