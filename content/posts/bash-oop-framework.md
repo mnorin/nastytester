@@ -38,7 +38,7 @@ task1.execute
 {{< /highlight >}}
 
 The syntax probably looks familiar, it's similar to Python or JavaScript.
-But under the hood, it's just bash. The obj function reads your class definition and does simple string substitution to create namespaced functions.
+But under the hood, it's just bash. The "task" function reads your class definition and does simple string substitution to create namespaced functions.
 When you write task1.execute, you're calling a regular bash function named task1.execute.
 No runtime overhead, no interpretation layer, just plain bash functions.
 
